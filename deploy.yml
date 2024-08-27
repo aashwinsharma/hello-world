@@ -1,0 +1,33 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload to S3
+        run: |
+          aws s3 cp build/ s3://my-spinnaker-bucket/ --recursive
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AKIA47CRVDCA6TOZNEHX }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.gk+Q5pH5ecXmfpf7q8kRwIMEMDUaXRK5o9kv0fH/ }}
+          AWS_REGION: 'us-east-1'
